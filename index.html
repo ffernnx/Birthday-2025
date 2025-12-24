@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Birthday Greeting</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;600;800&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
     
@@ -14,6 +14,8 @@
     <script src="script.js" defer></script>
 </head>
 <body>
+
+    <audio id="bg-music" loop></audio>
 
     <div id="home-view" class="view active">
         <header class="home-header">
@@ -90,14 +92,16 @@
 
         <div class="section" style="padding-bottom: 5rem;">
             
-            <div class="cake-container" onclick="lightCandle(this)">
+            <div class="cake-container" id="cake-interaction">
                 <p class="instruction" id="cake-text">Tap to light the candle</p>
-                <div class="cake">
-                    <div class="candle">
-                        <div class="flame" id="flame-el"></div>
+                
+                <div class="cake-body" onclick="lightCandle(event)">
+                    <div class="plate"></div>
+                    <div class="layer layer-bottom"><div class="icing-drip"></div></div>
+                    <div class="layer layer-top"><div class="icing-drip"></div></div>
+                    <div class="candle-container">
+                        <div class="candle"><div class="flame" id="flame-el"></div></div>
                     </div>
-                    <div class="icing"></div>
-                    <div class="base"></div>
                 </div>
             </div>
 
