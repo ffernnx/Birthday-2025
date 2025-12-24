@@ -1,0 +1,261 @@
+/* --- 1. CSS VARIABLES & RESET --- */
+:root {
+    --font-main: 'Poppins', 'Sarabun', sans-serif;
+    --transition-speed: 0.5s;
+    
+    /* Default Theme Variables */
+    --bg-gradient: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%);
+    --primary-color: #d946ef;
+    --text-color: #1e293b;
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    font-family: var(--font-main);
+    background: #f8fafc;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- 2. VIEW MANAGEMENT --- */
+.view {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.view.active {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 10;
+    transform: translateY(0);
+}
+
+/* --- 3. HOMEPAGE STYLES --- */
+#home-view {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.home-header h1 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+.highlight { color: #8252f1; font-weight: 800; }
+
+.card-container { display: flex; gap: 15px; }
+
+.selection-card {
+    flex: 1;
+    height: 200px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.selection-card:active { transform: scale(0.95); }
+
+/* การ์ดแม่ */
+.card-mom {
+    background: linear-gradient(135deg, #eec3d1, #ffffff);
+    border: 2px solid #d5828e;
+    color: #d76576;
+}
+
+/* การ์ดพ่อ */
+.card-dad {
+    background: linear-gradient(135deg, #63a9ff 0%, #93fffa 100%);
+    border: 2px solid #5260a8;
+    color: #3c2982;
+}
+
+.card-icon svg { width: 48px; height: 48px; margin-bottom: 10px; }
+
+/* --- 4. GREETING VIEW STYLES --- */
+#greeting-view {
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    scroll-behavior: smooth;
+}
+
+.back-btn {
+    position: fixed;
+    top: 20px; left: 20px;
+    z-index: 100;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Sections */
+.section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.section.visible { opacity: 1; transform: translateY(0); }
+
+/* Hero Text */
+.hero-title { font-size: 3.5rem; line-height: 1; font-weight: 800; margin-bottom: 2rem; }
+.hero-name { color: var(--primary-color); display: block; margin-top: 10px; }
+
+/* Balloons Animation */
+.balloons { display: flex; gap: 10px; }
+.balloon {
+    width: 50px; height: 65px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    animation: float 3s ease-in-out infinite;
+}
+.balloon:nth-child(2) { animation-delay: 0.5s; background: #fff; opacity: 0.5; }
+.balloon:nth-child(3) { animation-delay: 1s; }
+
+/* Message Card */
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 90%;
+    text-align: left; /* ชิดซ้าย */
+}
+
+/* Interactive Cake */
+.cake-container { cursor: pointer; user-select: none; }
+.instruction { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 1rem; opacity: 0.7; }
+
+.cake {
+    width: 140px; height: 100px;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    margin: 0 auto;
+}
+.icing { width: 100%; height: 25px; background: var(--primary-color); border-radius: 10px 10px 0 0; }
+.base { width: 100%; height: 60px; background: #e2e8f0; border-radius: 0 0 10px 10px; }
+.candle { width: 8px; height: 35px; background: #ef4444; margin-bottom: 2px; position: relative; }
+
+.flame {
+    width: 14px; height: 14px;
+    background: #fbbf24;
+    border-radius: 50% 50% 20% 20%;
+    position: absolute; top: -14px; left: -3px;
+    box-shadow: 0 0 10px #fbbf24;
+    transform: scale(0);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.flame.lit { transform: scale(1); animation: flicker 0.6s infinite alternate; }
+
+@keyframes flicker {
+    from { transform: scale(1) rotate(-5deg); opacity: 0.8; }
+    to { transform: scale(1.1) rotate(5deg); opacity: 1; }
+}
+
+/* Return Button Style */
+.return-btn {
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 0.9rem;
+    text-decoration: none;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    transition: all 0.2s;
+}
+.return-btn:active { transform: scale(0.95); opacity: 1; }
+
+/* --- POLAROID GALLERY STYLES (Mixed Grid) --- */
+#photo-section {
+    padding-top: 0;
+    padding-bottom: 4rem;
+    min-height: auto;
+}
+
+.polaroid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 0 20px;
+    max-width: 500px;
+    margin: 20px auto;
+    grid-auto-flow: dense;
+}
+
+.polaroid {
+    background: white;
+    padding: 6px 6px 25px 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    width: 100%;
+    transition: transform 0.3s ease;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.polaroid img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 1px solid #eee;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+/* ขนาดภาพพิเศษ */
+.polaroid.wide {
+    grid-column: span 2; 
+    transform: rotate(0deg) !important;
+    margin: 10px 0;
+}
+.polaroid.wide img { aspect-ratio: 16 / 9; }
+
+.polaroid.tall img { aspect-ratio: 3 / 4; }
+
+/* การเอียงสลับ */
+.polaroid:not(.wide):nth-child(odd) { transform: rotate(-3deg); margin-top: 10px; }
+.polaroid:not(.wide):nth-child(even) { transform: rotate(3deg); }
+
+.polaroid:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
