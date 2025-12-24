@@ -6,17 +6,18 @@ const THEMES = {
         textColor: '#1e293b',
         glassBg: 'rgba(255, 255, 255, 0.35)',
         glassBorder: 'rgba(255, 255, 255, 0.6)',
-        message: "สุขสันต์วันเกิดนะแม่ ขอให้แม่มีความสุขมาก ๆ สุขภาพแข็งแรง รักแม่ที่สุดในโลกเลย!",
+        message: "สุขสันต์วันเกิดนะคะคุณแม่ วันเกิดปีนี้ขอให้คุณแม่มีความสุขมากๆ สุขภาพร่างกายแข็งแรง ไม่เจ็บไข้ได้ป่วย เฮงๆรวยๆเงินไหลมาเทมาเยอะๆ ยิ้มสวยๆเหมือนนางงามแบบนี้ตลอดไปนะคะ และขอบคุณตุณแม่มากๆนะคะ ที่คอยดูแลเอาใจใส่ ทำอาหารอร่อยๆให้กิน และคอยบ่นคอยสอนด้วยความหวังดีเสมอมา บางทีหนูอาจจะดื้อไปบ้างต้องขอโทษด้วยนะคะ และขอให้ทุกๆวันของคุณแม่เต็มไปด้วยรอยยิ้มที่แสนอบอุ่นจากครอบครัวนะคะ ใบเฟิร์นรักคุณแม่ที่สุดในโลกเลยค่ะ",
         confettiColors: ['#ff0000', '#ffa500', '#ffc0cb'],
+        musicSrc: 'music/HBD_song.mp3',
         photos: [
-            'images/mom-1.jpg', 
-            'images/mom-2.jpg', 
-            'images/mom-3.jpg', 
-            'images/mom-4.jpg', 
-            'images/mom-5.jpg', 
-            'images/mom-6.jpg', 
-            'images/mom-7.jpg', 
-            'images/mom-8.jpg'
+            'picture/Mom/mom-1.jpg', 
+            'picture/Mom/mom-2.jpg',
+            'picture/Mom/mom-3.jpg',  
+            'picture/Mom/mom-4.jpg', 
+            'picture/Mom/mom-5.jpg', 
+            'picture/Mom/mom-6.jpg', 
+            'picture/Mom/mom-7.jpg', 
+            'picture/Mom/mom-8.jpg'
         ]
     },
     'My Father': {
@@ -27,15 +28,16 @@ const THEMES = {
         glassBorder: 'rgba(255, 255, 255, 0.6)',
         message: "สุขสันต์วันเกิดนะคะป๊า วันเกิดปีนี้หนูอาจจะไม่ได้มีของขวัญราคาแพงอะไรมอบให้ แต่หนูอยากบอกป๊าว่า ขอบคุณที่คอยเป็นแบบอย่าง เป็นที่ปรึกษา และให้ความรักกับลูกเสมอมา ปีนี้หนูอยากเห็นป๊าพักผ่อนเยอะๆ วางเรื่องเครียดๆ ลงบ้าง หาเวลาทำสิ่งที่ป๊าชอบ และดูแลสุขภาพตัวเองให้แข็งแรงอยู่เสมอ หนูสัญญาว่าหนูจะตั้งใจเรียน ทำหน้าที่ของตัวเองให้ดีที่สุดนะคะ ใบเฟิร์นรักป๊านะคะ",
         confettiColors: ['#ffd700', '#008080', '#ffffff'],
+        musicSrc: 'music/HBD_song.mp3',
         photos: [
-            'images/dad-1.jpg', 
-            'images/dad-2.jpg', 
-            'images/dad-3.jpg', 
-            'images/dad-4.jpg', 
-            'images/dad-5.jpg', 
-            'images/dad-6.jpg', 
-            'images/dad-7.jpg', 
-            'images/dad-8.jpg'
+            'picture/Dad/dad-1.jpg', 
+            'picture/Dad/dad-2.jpg',
+            'picture/Dad/dad-3.jpg',  
+            'picture/Dad/dad-4.jpg', 
+            'picture/Dad/dad-5.jpg', 
+            'picture/Dad/dad-6.jpg', 
+            'picture/Dad/dad-7.jpg', 
+            'picture/Dad/dad-8.jpg'
         ]
     }
 };
@@ -43,6 +45,7 @@ const THEMES = {
 // --- DOM ELEMENTS ---
 const homeView = document.getElementById('home-view');
 const greetingView = document.getElementById('greeting-view');
+const musicPlayer = document.getElementById('bg-music');
 const root = document.documentElement;
 let currentThemeObj = null;
 
@@ -65,7 +68,6 @@ function selectProfile(person) {
     const theme = THEMES[person];
     currentThemeObj = theme;
 
-    // Update Styles & Text
     root.style.setProperty('--bg-gradient', theme.gradient);
     root.style.setProperty('--primary-color', theme.primary);
     root.style.setProperty('--text-color', theme.textColor);
@@ -75,7 +77,6 @@ function selectProfile(person) {
     document.getElementById('name-placeholder').textContent = person;
     document.getElementById('message-placeholder').textContent = theme.message;
 
-    // Update Photos
     const photoElements = document.querySelectorAll('.polaroid-img'); 
     if (theme.photos && theme.photos.length > 0) {
         photoElements.forEach((img, index) => {
@@ -85,35 +86,40 @@ function selectProfile(person) {
         });
     }
 
-    // Switch View
     homeView.classList.remove('active');
     greetingView.classList.add('active');
     greetingView.scrollTop = 0; 
 
-    // Initial Confetti
     triggerConfetti(theme.confettiColors);
     
-    // Reset Cake
     document.getElementById('flame-el').classList.remove('lit');
     document.getElementById('cake-text').textContent = "Tap to light the candle";
+
+    if (theme.musicSrc) {
+        musicPlayer.src = theme.musicSrc;
+        musicPlayer.volume = 0.5;
+        musicPlayer.play().catch(e => console.log("Audio play failed:", e));
+    }
 }
 
 function goHome() {
     greetingView.classList.remove('active');
     homeView.classList.add('active');
     document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    
+    musicPlayer.pause();
+    musicPlayer.currentTime = 0;
 }
 
-function lightCandle(element) {
+function lightCandle(event) {
     const flame = document.getElementById('flame-el');
     const text = document.getElementById('cake-text');
+    const element = event.currentTarget; 
     
     if (!flame.classList.contains('lit')) {
-        // 1. Light the candle
         flame.classList.add('lit');
         text.textContent = "Make a wish! ✨";
         
-        // 2. Confetti Burst
         const rect = element.getBoundingClientRect();
         const x = (rect.left + rect.width / 2) / window.innerWidth;
         const y = (rect.top + rect.height / 2) / window.innerHeight;
@@ -126,7 +132,10 @@ function lightCandle(element) {
             scalar: 0.8
         });
 
-        // ❌ No auto redirect. User stays here.
+        setTimeout(() => {
+            flame.classList.remove('lit');
+            text.textContent = "Tap to light the candle";
+        }, 5000);
     }
 }
 
